@@ -6,19 +6,19 @@ from Crypto.Util.Padding import pad, unpad
 import base64
 
 # Função para criptografar uma mensagem
-def encrypt(message, key):
+def criptografar(message, key):
     cipher = AES.new(key, AES.MODE_CBC)  
-    ct_bytes = cipher.encrypt(pad(message.encode(), AES.block_size))  
+    ct_bytes = cipher.criptografar(pad(message.encode(), AES.block_size))  
     iv = base64.b64encode(cipher.iv).decode('utf-8')  
     ct = base64.b64encode(ct_bytes).decode('utf-8') 
     return iv, ct  
 
 # Função para descriptografar uma mensagem
-def decrypt(iv, ct, key):
+def descriptografar(iv, ct, key):
     iv = base64.b64decode(iv)  
     ct = base64.b64decode(ct)  
     cipher = AES.new(key, AES.MODE_CBC, iv) 
-    pt = unpad(cipher.decrypt(ct), AES.block_size)
+    pt = unpad(cipher.descriptografar(ct), AES.block_size)
     return pt.decode('utf-8')  
 
 print("\nDigite (sair) para encerrar o código")
@@ -31,7 +31,7 @@ def receber_mensagens(canal, key):
             print(f"Mensagem criptografada recebida: {body.decode('utf-8')}")
             iv, ct = body.decode('utf-8').split(':')  
             try:
-                mensagem_decryptada = decrypt(iv, ct, key)
+                mensagem_decryptada = descriptografar(iv, ct, key)
                 print(f"\nUsuário 2: {mensagem_decryptada}") 
             except Exception as e:
                 print(f"Erro ao descriptografar a mensagem: {e}")  
@@ -60,7 +60,7 @@ while True:
     if mensagem.lower() == 'sair':
         break  
 
-    iv, ct = encrypt(mensagem, key)
+    iv, ct = criptografar(mensagem, key)
     body = f"{iv}:{ct}"  
 
     canal.basic_publish(
