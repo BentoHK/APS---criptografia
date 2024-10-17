@@ -1,4 +1,4 @@
-import pika
+import pika as rabbit
 import threading
 import time
 from Crypto.Cipher import AES
@@ -38,11 +38,11 @@ def receber_mensagens(canal, key):
         time.sleep(0.5) 
 
 # Conexão com RabbitMQ
-conexao = pika.BlockingConnection(pika.ConnectionParameters(
+conexao = rabbit.BlockingConnection(rabbit.ConnectionParameters(
     host='15.228.248.2',
     port=5672,
     virtual_host='Host-MHPG',
-    credentials=pika.PlainCredentials('Admin', '1234')
+    credentials=rabbit.PlainCredentials('Admin', '1234')
 ))
 canal = conexao.channel()  # Cria um canal de comunicação
 
@@ -67,7 +67,7 @@ while True:
         exchange='Unip-aps-cc2p2',
         routing_key='Cliente2',
         body=body,
-        properties=pika.BasicProperties(delivery_mode=2) 
+        properties=rabbit.BasicProperties(delivery_mode=2) 
     )
     print(f"Mensagem criptografada enviada: {iv + ct}")
 
