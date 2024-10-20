@@ -58,7 +58,10 @@ threading.Thread(target=receber_mensagens, args=(canal, key), daemon=True).start
 while True:
     mensagem = input("")
     if mensagem.lower() == 'sair':
-        break  
+        break
+    if len(mensagem) >= 128:
+        print("Limite de caracteres atingido, digite a mensagem novamente.")
+        continue
 
     iv, ct = criptografar(mensagem, key)
     body = f"{iv}:{ct}"  
