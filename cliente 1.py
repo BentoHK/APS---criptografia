@@ -21,8 +21,6 @@ def descriptografar(iv, ct, key):
     pt = unpad(cipher.descriptografar(ct), AES.block_size)
     return pt.decode('utf-8')  
 
-print("\nDigite (sair) para encerrar o código")
-
 # Função para receber mensagens da fila
 def receber_mensagens(canal, key):
     while True:
@@ -37,7 +35,6 @@ def receber_mensagens(canal, key):
                 print(f"Erro ao descriptografar a mensagem: {e}")  
         time.sleep(0.5)  
 
-
 conexao = rabbit.BlockingConnection(rabbit.ConnectionParameters(
     host='15.228.248.2',
     port=5672,
@@ -46,14 +43,21 @@ conexao = rabbit.BlockingConnection(rabbit.ConnectionParameters(
 ))
 canal = conexao.channel()  
 
+                                                                                     
+print(" ██████╗██████╗ ██╗██████╗ ████████╗    ██████╗  ██████╗ ███╗   ███╗██████╗  ██████╗ ")
+print("██╔════╝██╔══██╗██║██╔══██╗╚══██╔══╝    ██╔══██╗██╔═══██╗████╗ ████║██╔══██╗██╔═══██╗")
+print("██║     ██████╔╝██║██████╔╝   ██║       ██████╔╝██║   ██║██╔████╔██║██████╔╝██║   ██║")
+print("██║     ██╔══██╗██║██╔═══╝    ██║       ██╔═══╝ ██║   ██║██║╚██╔╝██║██╔══██╗██║   ██║")
+print("╚██████╗██║  ██║██║██║        ██║       ██║     ╚██████╔╝██║ ╚═╝ ██║██████╔╝╚██████╔╝")
+print(" ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝       ╚═╝      ╚═════╝ ╚═╝     ╚═╝╚═════╝  ╚═════╝ ")
+
+print("\nDigite (sair) para encerrar o código")
 
 key_input = input("Digite uma chave de 16 bytes: ")
 key_input = key_input[:16].ljust(16)
 key = key_input.encode('utf-8')
 
-
 threading.Thread(target=receber_mensagens, args=(canal, key), daemon=True).start()
-
 
 while True:
     mensagem = input("")
