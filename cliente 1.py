@@ -5,6 +5,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 import base64
 import os
+from colored import fg, bg, attr
 
 # Função para criptografar uma mensagem
 def criptografar(message, key):
@@ -87,7 +88,7 @@ print(" ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚�
 
 print("\nDigite (sair) para encerrar o código")
 
-key_input = input("Digite uma chave de 16 bytes: ")
+key_input = input("Digite uma chave de criptografia: ")
 key_input = key_input[:16].ljust(16)
 key = key_input.encode('utf-8')
 
@@ -110,6 +111,6 @@ while True:
         body=body,  
         properties=rabbit.BasicProperties(delivery_mode=2)  
     )
-    print(f"Mensagem criptografada enviada: {iv + ct}")
+    print(fg('green') + f"Mensagem criptografada enviada: {iv + ct}" + attr('reset'))
 
 conexao.close() 
